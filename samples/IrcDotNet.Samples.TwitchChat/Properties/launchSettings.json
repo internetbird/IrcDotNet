@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IrcDotNet.Samples.TwitchChat": {
+      "commandName": "IrcDotNet.Samples.TwitchChat",
+      "commandLineArgs": "shai oauth:61922p0dso8aqegjlmeyf6s43jth9z"
+    }
+  }
+}

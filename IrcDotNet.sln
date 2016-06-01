@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{E424B1D1-BF95-4241-97C3-7519D843EE19}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "IrcDotNet.Samples.TwitchChat", "samples\IrcDotNet.Samples.TwitchChat\IrcDotNet.Samples.TwitchChat.xproj", "{2C2D7884-8BAB-488D-A491-F1F0D9139EB7}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "IrcDotNet.Samples.TwitterBot", "samples\IrcDotNet.Samples.TwitterBot\IrcDotNet.Samples.TwitterBot.xproj", "{1C3D933F-CB6A-4DCA-AC66-37AB0AA0F025}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "IrcDotNet.Samples.FreeNodeBot", "samples\IrcDotNet.Samples.FreeNodeBot\IrcDotNet.Samples.FreeNodeBot.xproj", "{C6500F94-6971-493B-B527-19C440182C8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{1C3D933F-CB6A-4DCA-AC66-37AB0AA0F025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C3D933F-CB6A-4DCA-AC66-37AB0AA0F025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C3D933F-CB6A-4DCA-AC66-37AB0AA0F025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6500F94-6971-493B-B527-19C440182C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6500F94-6971-493B-B527-19C440182C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6500F94-6971-493B-B527-19C440182C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6500F94-6971-493B-B527-19C440182C8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,5 +76,6 @@ Global
 		{BA6ABC78-0882-4B9E-851B-1735F049A7F2} = {58B13A53-06DB-443D-8919-2EFD23F425E4}
 		{2C2D7884-8BAB-488D-A491-F1F0D9139EB7} = {58B13A53-06DB-443D-8919-2EFD23F425E4}
 		{1C3D933F-CB6A-4DCA-AC66-37AB0AA0F025} = {58B13A53-06DB-443D-8919-2EFD23F425E4}
+		{C6500F94-6971-493B-B527-19C440182C8C} = {58B13A53-06DB-443D-8919-2EFD23F425E4}
 	EndGlobalSection
 EndGlobal

@@ -14,7 +14,7 @@ namespace IrcDotNet
                 return;
             }
 
-            var server = "irc.twitch.tv";
+            var server = "irc.chat.twitch.tv";
             var username = args[0];
             var password = args[1];
             Console.WriteLine("Starting to connect to twitch as {0}.", username);
