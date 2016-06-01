@@ -11,7 +11,18 @@ namespace IrcDotNet.Samples.FreeNodeBot
         {
             get
             {
-                return new IrcUserRegistrationInfo {NickName = "FriendlyBot", UserName = "FriendlyBot"} ;
+                return new IrcUserRegistrationInfo {NickName = "FriendlyBot", UserName = "FriendlyBot", RealName = "Friendly Bot"} ;
+            }
+        }
+
+
+        protected override void OnChannelMessageReceived(IrcChannel channel, IrcMessageEventArgs e)
+        {
+            IrcClient client = channel.Client;
+
+            if (e.Text == "bot speak!")
+            {
+                client.LocalUser.SendMessage(, );
             }
         }
     }
