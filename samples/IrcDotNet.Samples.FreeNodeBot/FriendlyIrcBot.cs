@@ -15,15 +15,17 @@ namespace IrcDotNet.Samples.FreeNodeBot
             }
         }
 
-
-        protected override void OnChannelMessageReceived(IrcChannel channel, IrcMessageEventArgs e)
+        protected override void InitializeChatCommandProcessors()
         {
-            IrcClient client = channel.Client;
+            base.InitializeChatCommandProcessors();
 
-            if (e.Text == "bot speak!")
-            {
-                client.LocalUser.SendMessage(, );
-            }
+            this.ChatCommandProcessors.Add("saysomething", ProcessChatCommandSaySomething);
+        }
+
+        private void ProcessChatCommandSaySomething(IrcClient client, IIrcMessageSource source, IList<IIrcMessageTarget> targets, string command, IList<string> parameters)
+        {
+            client.LocalUser.SendMessage(targets, "Hello From Friendly Bot!");
+
         }
     }
 }
