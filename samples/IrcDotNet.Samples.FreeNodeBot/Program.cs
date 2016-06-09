@@ -19,6 +19,8 @@ namespace IrcDotNet.Samples.FreeNodeBot
                 // Create and run bot.
                 bot = new FriendlyIrcBot();
                 bot.Run();
+               
+               
             }
 
             catch (Exception ex)
