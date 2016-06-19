@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace IrcDotNet.Samples.FreeNodeBot
     {
 
         private Dictionary<string, int> m_programmingLangVotes;
+        private const string FreeNodeServerAddress = "irc.freenode.net";
 
         public FriendlyIrcBot() : base()
         {
@@ -25,27 +27,48 @@ namespace IrcDotNet.Samples.FreeNodeBot
             }
         }
 
+        protected override void InitializeCommandProcessors()
+        {
+            base.InitializeCommandProcessors();
+
+            this.CommandProcessors.Add("joinchannel", ProcessCommandJoinChannel);
+        }
+
+        private void ProcessCommandJoinChannel(string command, IList<string> parameters)
+        {
+            var serverName = Clients[0].ServerName;
+
+            var client = GetClientFromServerNameMask(serverName);
+            var channelName = parameters[0];
+
+            client.Channels.Join(channelName);
+
+        }
+
         protected override void InitializeChatCommandProcessors()
         {
             base.InitializeChatCommandProcessors();
 
-            ChatCommandProcessors.Add("my-fav-prog-lang", ProcessChatCommandMyFavoriteProgrammingLanguage);
+            ChatCommandProcessors.Add("fav-prog-lang", ProcessChatCommandMyFavoriteProgrammingLanguage);
+            ChatCommandProcessors.Add("voteon", ProcessChatCommandMyFavoriteProgrammingLanguage);
             ChatCommandProcessors.Add("results", ProcessChatCommandFavoriteProgrammingLanguageResults);
         }
 
         private void ProcessChatCommandFavoriteProgrammingLanguageResults(IrcClient client, IIrcMessageSource source, IList<IIrcMessageTarget> targets, string command, IList<string> parameters)
         {
 
-            client.LocalUser.SendMessage(targets, "-------------------------------------------");
-            client.LocalUser.SendMessage(targets, "Favorite Programming Language Results");
-            client.LocalUser.SendMessage(targets, "-------------------------------------------");
-          
+            var sb = new StringBuilder();
+
+            sb.Append("Favorite Programming Language Results: ");
+           
             foreach (string language in m_programmingLangVotes.Keys)
             {
                 int numOfVotes = m_programmingLangVotes[language];
-                client.LocalUser.SendMessage(targets, $"{language}\t:{numOfVotes} " + (numOfVotes == 1 ? "vote" : "votes"));
+                sb.Append($"{language}:{numOfVotes} " + (numOfVotes == 1 ? "vote" : "votes") + " ,");
             }
-          
+
+            client.LocalUser.SendMessage(targets, sb.ToString());
+
         }
 
         private void ProcessChatCommandMyFavoriteProgrammingLanguage(IrcClient client, IIrcMessageSource source, IList<IIrcMessageTarget> targets, string command, IList<string> parameters)
@@ -77,11 +100,19 @@ namespace IrcDotNet.Samples.FreeNodeBot
 
             int langCurrentVotes = m_programmingLangVotes[favLangKey];
 
-            client.LocalUser.SendMessage(targets, $"{source.Name}, thanks for voting for {favLangName} programming language!");
-            client.LocalUser.SendMessage(targets, $"{favLangName} got {langCurrentVotes} votes so far");
+            var votingMessage = $"{source.Name}, thanks for voting for {favLangName} programming language! {favLangName} got {langCurrentVotes} votes so far";
+
+            client.LocalUser.SendMessage(targets, votingMessage);
+           
            
         }
 
-        
+        public override void Run()
+        {
+            //Automatically connnect to freenode
+            Connect(FreeNodeServerAddress, RegistrationInfo);
+
+            base.Run();
+        }
     }
 }
