@@ -104,10 +104,27 @@ namespace IrcDotNet.Samples.FreeNodeBot
 
             client.LocalUser.SendMessage(targets, votingMessage);
            
-           
         }
 
-        public override void Run()
+        protected override void OnChannelMessageReceived(IrcChannel channel, IrcMessageEventArgs e)
+        {
+         
+            if (e.Source is IrcUser && e.Text.IndexOf(RegistrationInfo.NickName, StringComparison.InvariantCultureIgnoreCase) >= 0)
+            {
+                var client = channel.Client;
+                client.LocalUser.SendMessage(e.Targets, $"Hello, {e.Source.Name}!");
+            }
+        }
+
+
+        protected override void OnChannelUserJoined(IrcChannel channel, IrcChannelUserEventArgs e)
+        {
+            channel.Client.LocalUser.SendMessage(channel.Name, $"Hello, {e.ChannelUser.User.NickName}!");
+        }
+
+
+        public override
+            void Run()
         {
             //Automatically connnect to freenode
             Connect(FreeNodeServerAddress, RegistrationInfo);
