@@ -10,14 +10,69 @@ namespace IrcDotNet.Samples.FreeNodeBot
     public class FriendlyIrcBot : BasicIrcBot
     {
 
-        private Dictionary<string, int> m_programmingLangVotes;
+        private Dictionary<string, int> programmingLangVotes;
         private const string FreeNodeServerAddress = "irc.freenode.net";
+        private List<string> userJoinedMessages;
+        private List<string> botMentionsMessages;
+        private Random random;
+
 
         public FriendlyIrcBot() : base()
         {
-            m_programmingLangVotes = new Dictionary<string, int>();
+            programmingLangVotes = new Dictionary<string, int>();
+            userJoinedMessages = GetUserJoinedMessages();
+            botMentionsMessages = GetBotMentionsMessages();
+            random = new Random(DateTime.UtcNow.Millisecond);
         }
 
+        private IrcClient Client
+        {
+            get
+            {
+                var serverName = Clients[0].ServerName;
+
+                var client = GetClientFromServerNameMask(serverName);
+                return client;
+            }
+        }
+
+        private List<string> GetBotMentionsMessages()
+        {
+            var messages = new List<string>
+            {
+                "What did you mean, {0}?",
+                "It's an intersting idea, {0}",
+                "Where are you from {0}?",
+                "It's a beautiful day outside, {0}",
+                "I live inside on a computer, {0}"
+
+            };
+
+            return messages;
+
+        }
+
+        private List<string> GetUserJoinedMessages()
+        {
+            var messages = new List<string>
+            {
+                "Howdy, {0}!",
+                "Nice to meet you, {0}!",
+                "Welcome to the channel, {0}!",
+                "A goodday to you, {0}",
+                "Hello {0}, my name is FriendlyBot. Type '!help' to see what I can do"
+
+            };
+
+            return messages;
+        }
+
+        private string GetRandomMessage(List<string> messages)
+        {
+            int randomIndex = random.Next(0, messages.Count);
+
+            return messages[randomIndex];
+        }
 
         public override IrcRegistrationInfo RegistrationInfo
         {
@@ -32,16 +87,23 @@ namespace IrcDotNet.Samples.FreeNodeBot
             base.InitializeCommandProcessors();
 
             this.CommandProcessors.Add("joinchannel", ProcessCommandJoinChannel);
+            this.CommandProcessors.Add("leavechannel", ProcessCommandLeaveChannel);
+        }
+
+     
+
+        private void ProcessCommandLeaveChannel(string command, IList<string> parameters)
+        {
+           
+            var channelName = parameters[0];
+            Client.Channels.Leave(channelName);
+
         }
 
         private void ProcessCommandJoinChannel(string command, IList<string> parameters)
         {
-            var serverName = Clients[0].ServerName;
-
-            var client = GetClientFromServerNameMask(serverName);
             var channelName = parameters[0];
-
-            client.Channels.Join(channelName);
+            Client.Channels.Join(channelName);
 
         }
 
@@ -61,9 +123,9 @@ namespace IrcDotNet.Samples.FreeNodeBot
 
             sb.Append("Favorite Programming Language Results: ");
            
-            foreach (string language in m_programmingLangVotes.Keys)
+            foreach (string language in programmingLangVotes.Keys)
             {
-                int numOfVotes = m_programmingLangVotes[language];
+                int numOfVotes = programmingLangVotes[language];
                 sb.Append($"{language}:{numOfVotes} " + (numOfVotes == 1 ? "vote" : "votes") + " ,");
             }
 
@@ -89,16 +151,16 @@ namespace IrcDotNet.Samples.FreeNodeBot
                 favLangName += favLangKey.Substring(1);
             }
 
-            if (m_programmingLangVotes.ContainsKey(favLangKey))
+            if (programmingLangVotes.ContainsKey(favLangKey))
             {
-                m_programmingLangVotes[favLangKey]++;
+                programmingLangVotes[favLangKey]++;
             }
             else
             {
-                m_programmingLangVotes.Add(favLangKey, 1);
+                programmingLangVotes.Add(favLangKey, 1);
             }
 
-            int langCurrentVotes = m_programmingLangVotes[favLangKey];
+            int langCurrentVotes = programmingLangVotes[favLangKey];
 
             var votingMessage = $"{source.Name}, thanks for voting for {favLangName} programming language! {favLangName} got {langCurrentVotes} votes so far";
 
@@ -112,14 +174,17 @@ namespace IrcDotNet.Samples.FreeNodeBot
             if (e.Source is IrcUser && e.Text.IndexOf(RegistrationInfo.NickName, StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 var client = channel.Client;
-                client.LocalUser.SendMessage(e.Targets, $"Hello, {e.Source.Name}!");
+                var message = string.Format(GetRandomMessage(botMentionsMessages), e.Source.Name);
+
+                client.LocalUser.SendMessage(e.Targets, message);
             }
         }
 
-
         protected override void OnChannelUserJoined(IrcChannel channel, IrcChannelUserEventArgs e)
         {
-            channel.Client.LocalUser.SendMessage(channel.Name, $"Hello, {e.ChannelUser.User.NickName}!");
+            var message = string.Format(GetRandomMessage(userJoinedMessages), e.ChannelUser.User.NickName);
+
+            channel.Client.LocalUser.SendMessage(channel.Name, message);
         }
 
 
