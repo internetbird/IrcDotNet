@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "0.6-*",
 
   "summary": "Common files for IrcDotNet samples.",
@@ -14,11 +14,71 @@
   "requireLicenseAcceptance": true,
 
   "frameworks": {
-    "net40": { },
-    "net45": { },
-    "net451": { },
-    "dnx451": { },
-    "dnx50": { }
+    "net40": {
+      "dependencies": {
+        "CsQuery": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0",
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.XML": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    },
+    "net45": {
+      "dependencies": {
+        "CsQuery": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0",
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.XML": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    },
+    "net451": {
+      "dependencies": {
+        "CsQuery": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0",
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.XML": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    },
+    "dnx451": {
+      "dependencies": {
+        "CsQuery": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0",
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.XML": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    },
+    "dnx50": {
+      "dependencies": {
+        "CsQuery": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0",
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.XML": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    }
   },
 
   "dependencies": {

@@ -1,5 +1,10 @@
-﻿{
-  "projects": [ "source", "test", "samples" ],
+{
+  "projects": [
+    "source",
+    "test",
+    "samples",
+    "wrap"
+  ],
   "sdk": {
     "version": "1.0.0-rc1-final"
   }

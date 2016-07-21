@@ -55,6 +55,7 @@ namespace IrcDotNet
             get { return null; }
         }
 
+
         protected IDictionary<string, ChatCommandProcessor> ChatCommandProcessors
         {
             get { return this.chatCommandProcessors; }
@@ -236,7 +237,7 @@ namespace IrcDotNet
             {
                 if (source is IIrcMessageTarget)
                 {
-                    client.LocalUser.SendNotice(defaultReplyTarget, "Command '{0}' not recognized.", command);
+                    OnCommandNotRecognized(client, command, defaultReplyTarget);
                 }
             }
         }
@@ -262,6 +263,11 @@ namespace IrcDotNet
         protected virtual void OnChannelNoticeReceived(IrcChannel channel, IrcMessageEventArgs e) { }
 
         protected virtual void OnChannelMessageReceived(IrcChannel channel, IrcMessageEventArgs e) { }
+
+        protected virtual void OnCommandNotRecognized(IrcClient client, string command, IList<IIrcMessageTarget> defaultReplyTarget)
+        {
+            client.LocalUser.SendNotice(defaultReplyTarget, "Command '{0}' not recognized.", command);
+        }
 
         #region IRC Client Event Handlers
 

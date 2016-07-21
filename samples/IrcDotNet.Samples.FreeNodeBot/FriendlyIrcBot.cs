@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsQuery;
 
 namespace IrcDotNet.Samples.FreeNodeBot
 {
@@ -182,11 +183,23 @@ namespace IrcDotNet.Samples.FreeNodeBot
 
         protected override void OnChannelUserJoined(IrcChannel channel, IrcChannelUserEventArgs e)
         {
-            var message = string.Format(GetRandomMessage(userJoinedMessages), e.ChannelUser.User.NickName);
+            var result = CQ.CreateFromUrl("http://www.quotationspage.com/random.php3");
 
-            channel.Client.LocalUser.SendMessage(channel.Name, message);
+            var quote = result.Select("dt.quote a").FirstOrDefault();
+            var author = result.Select("dd.author b a").FirstOrDefault();
+
+            if (quote != null && author != null)
+            {
+                var message = $"{quote.InnerText} , ({author.InnerText})";
+
+                channel.Client.LocalUser.SendMessage(channel.Name, message);
+            }
         }
 
+        protected override void OnCommandNotRecognized(IrcClient client, string command, IList<IIrcMessageTarget> defaultReplyTarget)
+        {
+          //Do nothing...
+        }
 
         public override
             void Run()
