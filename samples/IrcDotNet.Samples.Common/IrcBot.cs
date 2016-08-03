@@ -35,13 +35,13 @@ namespace IrcDotNet
         {
             this.isRunning = false;
             this.commandProcessors = new Dictionary<string, CommandProcessor>(
-                StringComparer.InvariantCultureIgnoreCase);
+                StringComparer.OrdinalIgnoreCase);
             InitializeCommandProcessors();
 
             this.allClients = new Collection<IrcClient>();
             this.allClientsReadOnly = new ReadOnlyCollection<IrcClient>(this.allClients);
             this.chatCommandProcessors = new Dictionary<string, ChatCommandProcessor>(
-                StringComparer.InvariantCultureIgnoreCase);
+                StringComparer.OrdinalIgnoreCase);
             InitializeChatCommandProcessors();
         }
 
@@ -54,7 +54,6 @@ namespace IrcDotNet
         {
             get { return null; }
         }
-
 
         protected IDictionary<string, ChatCommandProcessor> ChatCommandProcessors
         {
@@ -237,7 +236,7 @@ namespace IrcDotNet
             {
                 if (source is IIrcMessageTarget)
                 {
-                    OnCommandNotRecognized(client, command, defaultReplyTarget);
+                    client.LocalUser.SendNotice(defaultReplyTarget, "Command '{0}' not recognized.", command);
                 }
             }
         }
@@ -263,11 +262,6 @@ namespace IrcDotNet
         protected virtual void OnChannelNoticeReceived(IrcChannel channel, IrcMessageEventArgs e) { }
 
         protected virtual void OnChannelMessageReceived(IrcChannel channel, IrcMessageEventArgs e) { }
-
-        protected virtual void OnCommandNotRecognized(IrcClient client, string command, IList<IIrcMessageTarget> defaultReplyTarget)
-        {
-            client.LocalUser.SendNotice(defaultReplyTarget, "Command '{0}' not recognized.", command);
-        }
 
         #region IRC Client Event Handlers
 
@@ -348,15 +342,14 @@ namespace IrcDotNet
         {
             var channel = (IrcChannel)sender;
 
-            OnChannelUserJoined(channel, e);
-
+            OnChannelUserLeft(channel, e);
         }
 
         private void IrcClient_Channel_UserLeft(object sender, IrcChannelUserEventArgs e)
         {
             var channel = (IrcChannel)sender;
 
-            OnChannelUserLeft(channel, e);
+            OnChannelUserJoined(channel, e);
         }
 
         private void IrcClient_Channel_NoticeReceived(object sender, IrcMessageEventArgs e)
