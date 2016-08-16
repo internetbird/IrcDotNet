@@ -17,6 +17,8 @@ namespace IrcDotNet.Samples.FreeNodeBot
         private List<string> botMentionsMessages;
         private Random random;
 
+        private const string PersonalityForgeUriFormat = "http://www.personalityforge.com/api/chat/?apiKey={0}&hash={1}&message={2}";
+
 
         public FriendlyIrcBot() : base()
         {
