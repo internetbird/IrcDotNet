@@ -47,7 +47,7 @@ namespace IrcDotNet.Samples.FreeNodeBot
         {
             get
             {
-                return new IrcUserRegistrationInfo {NickName = "FriendlyBot", UserName = "FriendlyBot", RealName = "Friendly Bot"} ;
+                return new IrcUserRegistrationInfo {NickName = "Shmulik", UserName = "Shmulik", RealName = "Shmulik" } ;
             }
         }
 

@@ -15,8 +15,8 @@ namespace ChatBot
         private const string PersonalityForgeUriFormat = "http://www.personalityforge.com/api/chat/?apiKey={0}&hash={1}&message={2}";
         private const string ApiKey = "CT0QRqF4OCULaSsQ";
         private const string ApiSecret = "HIm7ZEm674kimIa55BctuHI37i736z6p";
-        private const int ChatBotID = 145863; //Shmulik
-        private const string BotExternalID = "ShmulikBOT";
+        private const int ChatBotID = 145863; 
+        private const string BotExternalID = "IrcBOT";
 
 
 
