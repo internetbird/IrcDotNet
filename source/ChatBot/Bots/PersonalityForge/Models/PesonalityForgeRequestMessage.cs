@@ -2,7 +2,7 @@
 
 namespace ChatBot.Bots.PersonalityForge.Models
 {
-    public class PesonalityForgeMessage
+    public class PesonalityForgeRequestMessage
     {
         /// <summary>
         /// what you're saying to the chat bot
@@ -20,7 +20,7 @@ namespace ChatBot.Bots.PersonalityForge.Models
         /// <summary>
         /// the current UTC timestamp
         /// </summary>
-        [JsonProperty(PropertyName = "chatBotID")]
+        [JsonProperty(PropertyName = "timestamp")]
         public int TimeStamp { get; set; }
 
 

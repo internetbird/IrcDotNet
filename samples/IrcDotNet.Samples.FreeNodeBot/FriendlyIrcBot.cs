@@ -80,9 +80,26 @@ namespace IrcDotNet.Samples.FreeNodeBot
         {
             base.InitializeChatCommandProcessors();
 
+            ChatCommandProcessors.Add("quote", ProcessChatCommandQuote);
             ChatCommandProcessors.Add("fav-prog-lang", ProcessChatCommandMyFavoriteProgrammingLanguage);
             ChatCommandProcessors.Add("voteon", ProcessChatCommandMyFavoriteProgrammingLanguage);
             ChatCommandProcessors.Add("results", ProcessChatCommandFavoriteProgrammingLanguageResults);
+        }
+
+        private void ProcessChatCommandQuote(IrcClient client, IIrcMessageSource source, IList<IIrcMessageTarget> targets, string command, IList<string> parameters)
+        {
+
+            var result = CQ.CreateFromUrl("http://www.quotationspage.com/random.php3");
+
+            var quote = result.Select("dt.quote a").FirstOrDefault();
+            var author = result.Select("dd.author b a").FirstOrDefault();
+
+            if (quote != null && author != null)
+            {
+                var message = $"{quote.InnerText} , ({author.InnerText})";
+
+                client.LocalUser.SendMessage(targets, message);
+            }
         }
 
         private void ProcessChatCommandFavoriteProgrammingLanguageResults(IrcClient client, IIrcMessageSource source, IList<IIrcMessageTarget> targets, string command, IList<string> parameters)
@@ -142,31 +159,23 @@ namespace IrcDotNet.Samples.FreeNodeBot
          
             if (e.Source is IrcUser && e.Text.IndexOf(RegistrationInfo.NickName, StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
-                //TODO: Add Chat bot response
+               
+                var client = channel.Client;
 
-                //var client = channel.Client;
-               // var message = string.Format(GetRandomMessage(botMentionsMessages), e.Source.Name);
+                var bot = new ChatBot.PersonalityForgeChatBot();
 
-              //  client.LocalUser.SendMessage(e.Targets, message);
+                var message = e.Text.Replace(RegistrationInfo.NickName, string.Empty);
+                message = message.Replace(",", string.Empty);
+
+                var botResponse = bot.GetResponse(e.Text);
+    
+                client.LocalUser.SendMessage(e.Targets, botResponse);
             }
         }
 
         protected override void OnChannelUserJoined(IrcChannel channel, IrcChannelUserEventArgs e)
         {
 
-            //TODO: Transfter to quote commands
-
-            //var result = CQ.CreateFromUrl("http://www.quotationspage.com/random.php3");
-
-            //var quote = result.Select("dt.quote a").FirstOrDefault();
-            //var author = result.Select("dd.author b a").FirstOrDefault();
-
-            //if (quote != null && author != null)
-            //{
-            //    var message = $"{quote.InnerText} , ({author.InnerText})";
-
-            //    channel.Client.LocalUser.SendMessage(channel.Name, message);
-            //}
         }
 
         protected override void OnCommandNotRecognized(IrcClient client, string command, IList<IIrcMessageTarget> defaultReplyTarget)

@@ -18,6 +18,9 @@ namespace ChatBot.Test
         [Test]
         public void TestPersonalityForgeBot()
         {
+            var bot = new PersonalityForgeChatBot();
+
+            var response = bot.GetResponse("How are you doing today?");
 
         }
 

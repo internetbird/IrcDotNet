@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChatBot
 {
-    public class PresonalityForgeChatBot : IChatBot
+    public class PersonalityForgeChatBot : IChatBot
     {
         private const string PersonalityForgeUriFormat = "http://www.personalityforge.com/api/chat/?apiKey={0}&hash={1}&message={2}";
         private const string ApiKey = "CT0QRqF4OCULaSsQ";
@@ -28,15 +28,26 @@ namespace ChatBot
         public string GetResponse(string message)
         {
 
-            var url = BuildUrl(message);
+            var messageResponse = new MessageResponse();
 
-            var client = new WebClient();
+            try
+            {
+                var url = BuildUrl(message);
 
-            string response =  client.DownloadString(url);
+                var client = new WebClient();
 
-            var responseObj = JsonConvert.DeserializeObject(response);
+                string response = client.DownloadString(url);
 
-            return response;
+                messageResponse = JsonConvert.DeserializeObject<MessageResponse>(response);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ChatBot error occured {ex.Message}");
+            }
+
+
+            return messageResponse.Success ? messageResponse.Message.Message : string.Empty;
            
         }
 
@@ -72,14 +83,24 @@ namespace ChatBot
             byte[] keyBytes = Encoding.ASCII.GetBytes(ApiSecret);
             byte[] requestBytes = Encoding.ASCII.GetBytes(requestJson);
 
-            HMACSHA256 hmac = new HMACSHA256(keyBytes);
+            using (var hmacsha256 = new HMACSHA256(keyBytes))
+            {
+                byte[] hashmessage = hmacsha256.ComputeHash(requestBytes);
 
+                return ByteArrayToHexString(hashmessage);
+            }
 
-            byte[] hashBytes = hmac.ComputeHash(requestBytes);
+        }
 
-
-            return Encoding.ASCII.GetString(hashBytes);
-
+        private string ByteArrayToHexString(byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+            {
+                hex.AppendFormat("{0:x2}", b);
+            }
+                
+            return hex.ToString();
         }
 
 
@@ -92,7 +113,7 @@ namespace ChatBot
         {
             var request = new MessageRequest();
 
-            var requestMessage = new PesonalityForgeMessage
+            var requestMessage = new PesonalityForgeRequestMessage
             {
                 Message = message,
                 ChatBotID = ChatBotID,
@@ -102,7 +123,10 @@ namespace ChatBot
 
             var requestUser = new PersonalityForgeUser
             {
-                ExternalID = BotExternalID
+                ExternalID = BotExternalID,
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                Gender = string.Empty
             };
           
             request.Message = requestMessage;
@@ -118,7 +142,7 @@ namespace ChatBot
         private int GetUTCTimeStamp()
         {
             var timeDiff = DateTime.UtcNow - new DateTime(1970, 1, 1);
-            var totaltime = (int)timeDiff.TotalMilliseconds;
+            var totaltime = (int)timeDiff.TotalSeconds;
 
             return totaltime;
         }

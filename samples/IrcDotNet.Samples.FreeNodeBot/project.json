@@ -16,6 +16,7 @@
   "frameworks": {
     "net40": {
       "dependencies": {
+        "ChatBot": "1.0.0-*",
         "CsQuery": "1.0.0-*"
       },
       "frameworkAssemblies": {
@@ -29,6 +30,7 @@
     },
     "net45": {
       "dependencies": {
+        "ChatBot": "1.0.0-*",
         "CsQuery": "1.0.0-*"
       },
       "frameworkAssemblies": {
@@ -42,6 +44,7 @@
     },
     "net451": {
       "dependencies": {
+        "ChatBot": "1.0.0-*",
         "CsQuery": "1.0.0-*"
       },
       "frameworkAssemblies": {
@@ -55,6 +58,7 @@
     },
     "dnx451": {
       "dependencies": {
+        "ChatBot": "1.0.0-*",
         "CsQuery": "1.0.0-*"
       },
       "frameworkAssemblies": {
@@ -68,6 +72,7 @@
     },
     "dnx50": {
       "dependencies": {
+        "ChatBot": "1.0.0-*",
         "CsQuery": "1.0.0-*"
       },
       "frameworkAssemblies": {
@@ -82,8 +87,11 @@
   },
 
   "dependencies": {
+    "NETStandard.Library": "1.5.0-rc2-24027",
+    "Newtonsoft.Json": "9.0.1",
     "IrcDotNet": "",
     "IrcDotNet.Samples.Common": "0.6-*"
+
   },
 
   "commands": {
