@@ -1,0 +1,26 @@
+{
+   "version": "0.6-*",
+
+  "description": "ChatBot Tests",
+  "authors": [ "internetbird" ],
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "frameworks": {
+    "net451": { },
+    "dnx451": { }
+  },
+
+  "dependencies": {
+    "NUnit": "3.0.1",
+    "NUnitLite": "3.0.1",
+    "ChatBot": "",
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "commands": {
+    "ChatBot.Test": "ChatBot.Test"
+  }
+}

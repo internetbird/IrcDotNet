@@ -13,19 +13,14 @@ namespace IrcDotNet.Samples.FreeNodeBot
 
         private Dictionary<string, int> programmingLangVotes;
         private const string FreeNodeServerAddress = "irc.freenode.net";
-        private List<string> userJoinedMessages;
-        private List<string> botMentionsMessages;
         private Random random;
 
-        private const string PersonalityForgeUriFormat = "http://www.personalityforge.com/api/chat/?apiKey={0}&hash={1}&message={2}";
-
+    
 
         public FriendlyIrcBot() : base()
         {
             programmingLangVotes = new Dictionary<string, int>();
-            userJoinedMessages = GetUserJoinedMessages();
-            botMentionsMessages = GetBotMentionsMessages();
-            random = new Random(DateTime.UtcNow.Millisecond);
+           random = new Random(DateTime.UtcNow.Millisecond);
         }
 
         private IrcClient Client
@@ -39,37 +34,8 @@ namespace IrcDotNet.Samples.FreeNodeBot
             }
         }
 
-        private List<string> GetBotMentionsMessages()
-        {
-            var messages = new List<string>
-            {
-                "What did you mean, {0}?",
-                "It's an intersting idea, {0}",
-                "Where are you from {0}?",
-                "It's a beautiful day outside, {0}",
-                "I live inside on a computer, {0}"
 
-            };
-
-            return messages;
-
-        }
-
-        private List<string> GetUserJoinedMessages()
-        {
-            var messages = new List<string>
-            {
-                "Howdy, {0}!",
-                "Nice to meet you, {0}!",
-                "Welcome to the channel, {0}!",
-                "A goodday to you, {0}",
-                "Hello {0}, my name is FriendlyBot. Type '!help' to see what I can do"
-
-            };
-
-            return messages;
-        }
-
+      
         private string GetRandomMessage(List<string> messages)
         {
             int randomIndex = random.Next(0, messages.Count);
@@ -176,26 +142,31 @@ namespace IrcDotNet.Samples.FreeNodeBot
          
             if (e.Source is IrcUser && e.Text.IndexOf(RegistrationInfo.NickName, StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
-                var client = channel.Client;
-                var message = string.Format(GetRandomMessage(botMentionsMessages), e.Source.Name);
+                //TODO: Add Chat bot response
 
-                client.LocalUser.SendMessage(e.Targets, message);
+                //var client = channel.Client;
+               // var message = string.Format(GetRandomMessage(botMentionsMessages), e.Source.Name);
+
+              //  client.LocalUser.SendMessage(e.Targets, message);
             }
         }
 
         protected override void OnChannelUserJoined(IrcChannel channel, IrcChannelUserEventArgs e)
         {
-            var result = CQ.CreateFromUrl("http://www.quotationspage.com/random.php3");
 
-            var quote = result.Select("dt.quote a").FirstOrDefault();
-            var author = result.Select("dd.author b a").FirstOrDefault();
+            //TODO: Transfter to quote commands
 
-            if (quote != null && author != null)
-            {
-                var message = $"{quote.InnerText} , ({author.InnerText})";
+            //var result = CQ.CreateFromUrl("http://www.quotationspage.com/random.php3");
 
-                channel.Client.LocalUser.SendMessage(channel.Name, message);
-            }
+            //var quote = result.Select("dt.quote a").FirstOrDefault();
+            //var author = result.Select("dd.author b a").FirstOrDefault();
+
+            //if (quote != null && author != null)
+            //{
+            //    var message = $"{quote.InnerText} , ({author.InnerText})";
+
+            //    channel.Client.LocalUser.SendMessage(channel.Name, message);
+            //}
         }
 
         protected override void OnCommandNotRecognized(IrcClient client, string command, IList<IIrcMessageTarget> defaultReplyTarget)
